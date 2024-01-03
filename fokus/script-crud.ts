@@ -33,6 +33,13 @@ function selecionarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplic
     }
 }
 
+function adicionarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao {
+    return {
+        ...estado,
+        tarefas: [...estado.tarefas, tarefa]
+    }
+}
+
 function atualizarUI () {
     const taskIconSvg = `
         <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24"
@@ -47,6 +54,7 @@ function atualizarUI () {
     const ulTarefas = document.querySelector('.app__section-task-list')
     const formAdicionarTarefa = document.querySelector<HTMLFormElement>('.app__form-add-task')
     const btnAdicionarTarefa = document.querySelector<HTMLButtonElement>('.app__button--add-task')
+    const txtarea = document.querySelector<HTMLTextAreaElement>('.app__form-textarea')
 
     if (!btnAdicionarTarefa) {
         throw Error('Botão de adicionar tarefa não encontrado');
@@ -54,6 +62,16 @@ function atualizarUI () {
 
     btnAdicionarTarefa.onclick = () => {
         formAdicionarTarefa?.classList.toggle('hidden')
+    }
+
+    formAdicionarTarefa!.onsubmit = (evento) => {
+        evento.preventDefault()
+        const descricao = txtarea!.value
+        estadoInicial = adicionarTarefa(estadoInicial, {
+            descricao,
+            concluida: false
+        })
+        atualizarUI()
     }
 
     // Limpando lista
