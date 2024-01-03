@@ -107,6 +107,12 @@ function atualizarUI () {
         li.appendChild(paragraph)
         li.appendChild(button)
 
+        li.addEventListener('click', () => {
+            console.log('A tarefa foi selecionada')
+            estadoInicial = selecionarTarefa(estadoInicial, tarefa)
+            atualizarUI()
+        })
+
         ulTarefas?.appendChild(li)
     })
 }
