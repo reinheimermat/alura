@@ -26,9 +26,21 @@ let estadoInicial: EstadoAplicacao = {
     tarefaSelecionada: null
 }
 
-const selecionarTarefa = (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao => {
+function selecionarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao {
     return {
         ...estado,
         tarefaSelecionada: tarefa === estado.tarefaSelecionada ? null : tarefa
     }
+}
+
+function atualizarUI () {
+    const ulTarefas = document.querySelector('.app__section-task-list')
+    // Limpando lista
+    if (ulTarefas) {
+        ulTarefas.innerHTML = ''
+    }
+
+    estadoInicial.tarefas.forEach(tarefa => {
+        
+    })
 }
