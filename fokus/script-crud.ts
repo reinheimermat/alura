@@ -5,7 +5,8 @@ export interface Tarefa {
 
 export interface EstadoAplicacao {
     tarefas: Tarefa[]
-    tarefaSelecionada: Tarefa | null
+    tarefaSelecionada: Tarefa | null,
+    editando: boolean
 }
 
 let estadoInicial: EstadoAplicacao = {
@@ -23,7 +24,8 @@ let estadoInicial: EstadoAplicacao = {
             concluida: false
         }
     ],
-    tarefaSelecionada: null
+    tarefaSelecionada: null,
+    editando: false
 }
 
 function selecionarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao {
@@ -38,6 +40,32 @@ function adicionarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplica
         ...estado,
         tarefas: [...estado.tarefas, tarefa]
     }
+}
+
+function deletarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao {
+    if (estado.tarefaSelecionada) {
+        const tarefas = estado.tarefas.filter(t => t != estado.tarefaSelecionada);
+        return {...estado, tarefas, tarefaSelecionada: null}
+    } else {
+        return estado
+    }
+}
+
+function deletarTarefas (estado: EstadoAplicacao): EstadoAplicacao {
+    return {...estado, tarefas : [], tarefaSelecionada: null}
+}
+
+function deletarTarefasConcluidas (estado: EstadoAplicacao): EstadoAplicacao {
+    return {
+        ...estado,
+        tarefas: estado.tarefas.filter(t => !t.concluida),
+        tarefaSelecionada: null,
+        editando: false
+    }
+}
+
+function editarTarefa (estado: EstadoAplicacao, tarefa: Tarefa): EstadoAplicacao {
+    return {...estado, editando: !estado.editando, tarefaSelecionada: tarefa}
 }
 
 function atualizarUI () {
